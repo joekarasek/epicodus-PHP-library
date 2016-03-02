@@ -1,0 +1,12 @@
+{% if patronform %}
+  <form action='/librarian/addPatron' method='post'>
+    <div class="form-group">
+      <h3>Add a new Patron</h3>
+      <label>Patron Name</label>
+      <input name='patron-name' type='text' class='form-control'>
+      <label>Patron Email</label>
+      <input name='patron-email' type='text' class='form-control'>
+    </div>
+    <button type='submit' class='btn btn-success'>Submit</button>
+  </form>
+{% endif %}

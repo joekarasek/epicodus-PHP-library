@@ -1,0 +1,12 @@
+{% if patrons %}
+    <br>
+    <ul>
+        {% for patron in patrons %}
+            <div class="well">
+                <li>
+                    <a href="/librarian/patron/{{ patron.getId }}">{{ patron.getName }}</a>
+                </li>
+            </div>
+        {% endfor %}
+    </ul>
+{% endif %}

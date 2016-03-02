@@ -43,6 +43,13 @@
               $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function update($new_name, $new_email)
+        {
+            $GLOBALS['DB']->exec("UPDATE patrons SET name = '{$new_name}', email = '{$new_email}' WHERE id = {$this->getId()};");
+            $this->setName($new_name);
+            $this->setEmail($new_email);
+        }
+
         function deletePatron()
         {
             $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");

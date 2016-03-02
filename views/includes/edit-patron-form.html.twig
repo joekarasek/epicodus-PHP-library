@@ -1,0 +1,18 @@
+{% if form %}
+  <form action='/librarian/patron/{{ patron.getId }}/update' method='post'>
+    <input type="hidden" name="_method" value="patch">
+    <div class="form-group">
+      <h3>Edit This Patron</h3>
+      <label>Patron Name</label>
+      <input name='new-patron-name' type='text' class='form-control' value='{{ patron.getName }}'>
+      <label>Patron Email</label>
+      <input name='new-patron-email' type='text' class='form-control' value='{{ patron.getEmail }}'>
+    </div>
+    <button type='submit' class='btn btn-success'>Submit</button>
+  </form>
+  <br>
+  <form action="/librarian/patron/{{ patron.getId }}/deletePatron" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <button type='submit' class='btn btn-danger'>Delete this patron</button>
+  </form>
+{% endif %}

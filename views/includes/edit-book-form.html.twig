@@ -11,10 +11,11 @@
   <br>
   <h3>Number of copies in catalog: {{ book.countCopies }}</h3>
   <form action="/librarian/book/{{ book.getId }}/addCopy" method="post">
-    <button type='submit' class='btn btn-success'>Add a copy to catalog</button>
+    <button type='submit' class='btn btn-warning'>Add a copy to catalog</button>
   </form>
+  <br>
   <form action="/librarian/book/{{ book.getId }}/deleteCopy" method="post">
-    <!-- <input type="hidden" name="_method" value="delete"> -->
-    <button type='submit' class='btn btn-success'>Delete a copy from the catalog</button>
+    <input type="hidden" name="_method" value="delete">
+    <button type='submit' class='btn btn-danger'>Delete a copy from the catalog</button>
   </form>
 {% endif %}

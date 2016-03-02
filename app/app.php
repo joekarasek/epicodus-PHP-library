@@ -111,7 +111,7 @@
         ));
     });
 
-    $app->post("/librarian/book/{book_id}/deleteCopy", function($book_id) use ($app) {
+    $app->delete("/librarian/book/{book_id}/deleteCopy", function($book_id) use ($app) {
         $book = Book::findById($book_id);
         $book->deleteCopy();
 
@@ -122,6 +122,76 @@
             'message' => array(
                 'type' => 'danger',
                 'text' => 'You removed a copy from the catalog'
+            )
+        ));
+    });
+
+    $app->get("/librarian/patrons", function() use ($app) {
+        $patrons = Patron::getAll();
+
+        return $app['twig']->render('librarian.html.twig', array(
+            'navbar' => true,
+            'patrons' => $patrons,
+            'patronform' => true
+        ));
+    });
+
+    $app->post("/librarian/addPatron", function() use ($app) {
+        if (!Patron::findByName($_POST['patron-name']))
+        {
+            $new_patron = new Patron($_POST['patron-name'], $_POST['patron-email']);
+            $new_patron->save();
+        } else {
+            $message = array(
+                'type' => 'danger',
+                'text' => 'That patron already exists. Patron not added to database.'
+            );
+        }
+
+        return $app['twig']->render('librarian.html.twig', array(
+            'navbar' => true,
+            'patrons' => Patron::getAll(),
+            'patronform' => true,
+            'message' => $message
+        ));
+    });
+
+    $app->get("/librarian/patron/{patron_id}", function($patron_id) use ($app) {
+        $patron = Patron::findById($patron_id);
+
+        return $app['twig']->render('librarian-patron.html.twig', array(
+            'navbar' => true,
+            'patron' => $patron,
+            'form' => true
+        ));
+    });
+
+    $app->patch("/librarian/patron/{patron_id}/update", function($patron_id) use ($app) {
+        $patron = Patron::findById($patron_id);
+        $patron->update($_POST['new-patron-name'], $_POST['new-patron-email']);
+
+        return $app['twig']->render('librarian-patron.html.twig', array(
+            'navbar' => true,
+            'patron' => $patron,
+            'form' => true,
+            'message' => array(
+                'type' => 'info',
+                'text' => 'Patron information updated!'
+            )
+        ));
+    });
+
+    $app->delete("/librarian/patron/{patron_id}/deletePatron", function($patron_id) use ($app) {
+        $patron = Patron::findById($patron_id);
+        $patron->deletePatron();
+
+        return $app['twig']->render('librarian.html.twig', array(
+            'navbar' => true,
+            'patrons' => Patron::getAll(),
+            'form' => true,
+            'message' => array(
+                'type' => 'danger',
+                'text' => 'You removed a patron'
             )
         ));
     });
