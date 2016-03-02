@@ -1,0 +1,15 @@
+{% if books %}
+    <ul>
+        {% for book in books %}
+            <div class="well">
+                <li>
+                    <a href="/librarian/book/{{ book.getId }}">{{ book.getTitle }} by
+                        {% for author in book.getAuthors %}
+                            {{ author.getName }}
+                        {% endfor%}
+                    </a>
+                </li>
+            </div>
+        {% endfor %}
+    </ul>
+{% endif %}

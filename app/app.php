@@ -25,5 +25,42 @@
         ));
     });
 
+    $app->get("/librarian", function() use ($app) {
+        return $app['twig']->render('librarian.html.twig', array(
+            'navbar' => true
+        ));
+    });
+
+
+    $app->get("/librarian/books", function() use ($app) {
+        $books = Book::getAll();
+
+        return $app['twig']->render('librarian.html.twig', array(
+            'navbar' => true,
+            'books' => $books,
+            'bookform' => true
+        ));
+    });
+
+    $app->post("/librarian/addBook", function() use ($app) {
+        $new_book = new Book($_POST['book-title']);
+        $new_book->save();
+
+        if (Author::findByName($_POST['book-author']))
+        {
+            $new_book->addAuthor(Author::findByName($_POST['book-author']));
+        } else {
+            $new_author = new Author($_POST['book-author']);
+            $new_author->save();
+            $new_book->addAuthor($new_author);
+        }
+
+        return $app['twig']->render('librarian.html.twig', array(
+            'navbar' => true,
+            'books' => Book::getAll(),
+            'bookform' => true
+        ));
+    });
+
     return $app;
 ?>

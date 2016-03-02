@@ -1,0 +1,12 @@
+{% if bookform %}
+  <form action='/librarian/addBook' method='post'>
+    <div class="form-group">
+      <h3>Add a new book</h3>
+      <label>Book Title</label>
+      <input name='book-title' type='text' class='form-control'>
+      <label>Book Author</label>
+      <input name='book-author' type='text' class='form-control'>
+    </div>
+    <button type='submit' class='btn btn-success'>Submit</button>
+  </form>
+{% endif %}
