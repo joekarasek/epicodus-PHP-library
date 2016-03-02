@@ -1,4 +1,3 @@
-<!-- testing with php unit, use this template for guidance -->
 <?php
 
     /**
