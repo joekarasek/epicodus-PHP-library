@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include '/includes/head.html.twig' %}
+  </head>
+  <body>
+    {% include '/includes/patron-navbar.html.twig' %}
+    <div class="container">
+      <h2>Book Title: {{ book.getTitle }}</h2>
+      <h3>Written By:
+          {% for author in book.getAuthors %}
+            {{ author.getName }}
+          {% endfor%}
+      </h3>
+      <h3>Number of copies in catalog: {{ book.countCopies }}</h3>
+      <h3>Number of copies in available: UPDATE ME</h3>
+      <form action="/patron/book/{{ book.getId }}/checkout" method="post">
+        <button type='submit' class='btn btn-danger'>Checkout this book!</button>
+      </form>
+    </div>
+  </body>
+</html>

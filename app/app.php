@@ -196,5 +196,38 @@
         ));
     });
 
+    $app->get("/patron", function() use ($app) {
+        return $app['twig']->render('patron.html.twig', array(
+            'navbar' => true
+        ));
+    });
+
+    $app->get("/patron/books", function() use ($app) {
+        $books = Book::getAll();
+
+        return $app['twig']->render('patron.html.twig', array(
+            'navbar' => true,
+            'books' => $books
+        ));
+    });
+
+    $app->get("/patron/book/{book_id}", function($book_id) use ($app) {
+        $book = Book::findById($book_id);
+
+        return $app['twig']->render('patron-book.html.twig', array(
+            'navbar' => true,
+            'book' => $book,
+        ));
+    });
+
+
+
+
+
+
+
+
+
+
     return $app;
 ?>
