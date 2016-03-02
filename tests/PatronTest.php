@@ -152,7 +152,7 @@
             $email2 = "maggie@pie.com";
             $test_patron2 = new Patron($name2, $email2, $id);
             $test_patron2->save();
-        
+
             //Act
             $test_patron->deletePatron();
 
@@ -212,29 +212,5 @@
         //     //Assert
         //     $this->assertEquals($test_patron->getCourses(), [$test_course, $test_course2]);
         // }
-        //
-        // function testDelete()
-        // {
-        //     //Arrange
-        //     $subject = "Math";
-        //     $course_number = "MTH101";
-        //     $id = 1;
-        //     $test_course = new Course($subject, $course_number, $id);
-        //     $test_course->save();
-        //
-        //     $name = "Maggie Pie";
-        //     $enrollment_date = '2016-03-05';
-        //     $id2 = 2;
-        //     $test_patron = new Patron($name, $enrollment_date, $id2);
-        //     $test_patron->save();
-        //
-        //     //Act
-        //     $test_patron->addCourse($test_course);
-        //     $test_patron->delete();
-        //
-        //     //Assert
-        //     $this->assertEquals([], $test_course->getPatrons());
-        // }
-
     }
  ?>

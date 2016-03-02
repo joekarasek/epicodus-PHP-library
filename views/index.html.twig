@@ -8,6 +8,12 @@
     <div class="container">
       {% include '/includes/message.html.twig'%}
       {% include '/includes/form.html.twig' %}
+      <form action="/librarian">
+          <button type="submit" name="button">I'm a librarian!</button>
+      </form>
+      <form action="/patron">
+          <button type="submit" name="button">I'm a library patron!</button>
+      </form>
     </div>
   </body>
 </html>
