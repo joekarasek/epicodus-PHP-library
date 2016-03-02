@@ -31,6 +31,12 @@
               $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function delete()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
+            // $GLOBALS['DB']->exec("DELETE FROM books_courses WHERE student_id = {$this->getId()};");
+        }
+
         static function getAll()
         {
             $returned_books = $GLOBALS['DB']->query("SELECT * FROM books;");

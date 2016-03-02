@@ -130,32 +130,28 @@
             $this->assertEquals($test_book, $result);
         }
 
+        function testDeleteBook()
+        {
+            //Arrange
+            $title = "Harry Houdini";
+            $id = null;
+            $test_book = new Book($title, $id);
+            $test_book->save();
 
-        // function testDeleteBook()
-        // {
-        //     //Arrange
-        //     $title = "Harry Houdini";
-        //
-        //     $id = 1;
-        //     $test_book = new Book($title, $enrollment_date, $id);
-        //     $test_book->save();
-        //
-        //
-        //     $title2 = "Maggie Pie";
-        //     $enrollment_date2 = '2016-03-05';
-        //     $id2 = 2;
-        //     $test_book2 = new Book($title2, $enrollment_date2, $id2);
-        //     $test_book2->save();
-        //
-        //
-        //     //Act
-        //     $test_book->delete();
-        //
-        //     //Assert
-        //     $this->assertEquals(Book::getAll(), [$test_book2]);
-        // }
-        //
-        //
+
+            $title2 = "Maggie Pie";
+            $test_book2 = new Book($title2, $id);
+            $test_book2->save();
+
+
+            //Act
+            $test_book->delete();
+
+            //Assert
+            $this->assertEquals(Book::getAll(), [$test_book2]);
+        }
+
+
         // function testAddCourse()
         // {
         //     //Arrange
