@@ -31,6 +31,29 @@
               $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function addBook($new_book)
+        {
+            $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$new_book->getId()}, {$this->getId()});");
+        }
+
+        function getBooks()
+        {
+            $query = $GLOBALS['DB']->query("SELECT books.* FROM authors
+                JOIN books_authors ON (authors.id = books_authors.author_id)
+                JOIN books ON (books_authors.book_id = books.id)
+                WHERE authors.id = {$this->getId()};");
+            $book_ids = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $books = array();
+            foreach($book_ids as $book) {
+                $title = $book['title'];
+                $id = $book['id'];
+                $new_book = new Book($title, $id);
+                array_push($books, $new_book);
+            }
+            return $books;
+        }
+
         static function getAll()
         {
             $returned_authors = $GLOBALS['DB']->query("SELECT * FROM authors;");

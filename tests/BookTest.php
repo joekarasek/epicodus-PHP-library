@@ -154,6 +154,8 @@
 
         function testAddAuthor()
         {
+            //Also tests method getAuthors, test was written but content was redundant
+            
             //Arrange
             $title = "Harry Houdinis Magic";
             $id = null;
@@ -182,36 +184,8 @@
             $this->assertEquals($test_book->getAuthors(), [$test_author]);
             $this->assertEquals($test_book2->getAuthors(), [$test_author, $test_author2]);
         }
-        //
-        // function testGetCourses()
-        // {
-        //     //Arrange
-        //     $title = "Harry Houdini";
-        //
-        //     $id = 1;
-        //     $test_book = new Book($title, $enrollment_date, $id);
-        //     $test_book->save();
-        //
-        //
-        //     $subject2 = "Chemistry 101";
-        //     $course_number = 'CHEM101';
-        //     $id2 = 1;
-        //     $test_course = new Course($subject2, $course_number, $id2);
-        //     $test_course->save();
-        //
-        //     $subject3 = "Chemistry 103";
-        //     $course_number2 = 'CHEM103';
-        //     $id3 = 2;
-        //     $test_course2 = new Course($subject3, $course_number, $id3);
-        //     $test_course2->save();
-        //
-        //     //Act
-        //     $test_book->addCourse($test_course);
-        //     $test_book->addCourse($test_course2);
-        //
-        //     //Assert
-        //     $this->assertEquals($test_book->getCourses(), [$test_course, $test_course2]);
-        // }
+
+
         //
         // function testDelete()
         // {

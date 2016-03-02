@@ -130,6 +130,40 @@
             $this->assertEquals($test_author, $result);
         }
 
+        function testAddBook()
+        {
+            //Also tests method getAuthors, test was written but content was redundant
+
+            //Arrange
+            $title = "Harry Houdinis Magic";
+            $id = null;
+            $test_book = new Book($title, $id);
+            $test_book->save();
+
+            $title2 = "Harry and Maggies Adventures";
+            $test_book2 = new Book($title2, $id);
+            $test_book2->save();
+
+            $name = "Harry Houdini";
+            $id = null;
+            $test_author = new Author($name, $id);
+            $test_author->save();
+
+            $name2 = "Maggie Pie";
+            $test_author2 = new Author($name2, $id);
+            $test_author2->save();
+
+            //Act
+            $test_author->addBook($test_book);
+            $test_author->addBook($test_book2);
+            $test_author2->addBook($test_book2);
+
+            //Assert
+            $this->assertEquals($test_author->getBooks(), [$test_book, $test_book2]);
+            $this->assertEquals($test_author2->getBooks(), [$test_book2]);
+        }
+
+
 
         // function testDeleteAuthor()
         // {
