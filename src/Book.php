@@ -57,7 +57,8 @@
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
-            // $GLOBALS['DB']->exec("DELETE FROM books_courses WHERE book_id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE book_id = {$this->getId()};");
+            //ASK JOHN ABOUT HOW TO TEST THIS LINE
         }
 
         static function getAll()

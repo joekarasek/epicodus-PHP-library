@@ -17,6 +17,7 @@
         protected function tearDown()
         {
             Book::deleteAll();
+            Author::deleteAll();
         }
 
         function testInfo()
@@ -133,29 +134,35 @@
         function testDeleteBook()
         {
             //Arrange
-            $title = "Harry Houdini";
+            $title = "Harry Houdinis Magic";
             $id = null;
             $test_book = new Book($title, $id);
             $test_book->save();
 
-
-            $title2 = "Maggie Pie";
+            $title2 = "Harry and Maggies Adventures";
             $test_book2 = new Book($title2, $id);
             $test_book2->save();
 
+            $name = "Harry Houdini";
+            $id = null;
+            $test_author = new Author($name, $id);
+            $test_author->save();
 
             //Act
+            $test_book->addAuthor($test_author);
+            $test_book2->addAuthor($test_author);
             $test_book->delete();
 
             //Assert
             $this->assertEquals(Book::getAll(), [$test_book2]);
+            $this->assertEquals($test_author->getBooks(), [$test_book2]);
         }
 
 
         function testAddAuthor()
         {
             //Also tests method getAuthors, test was written but content was redundant
-            
+
             //Arrange
             $title = "Harry Houdinis Magic";
             $id = null;
@@ -184,31 +191,5 @@
             $this->assertEquals($test_book->getAuthors(), [$test_author]);
             $this->assertEquals($test_book2->getAuthors(), [$test_author, $test_author2]);
         }
-
-
-        //
-        // function testDelete()
-        // {
-        //     //Arrange
-        //     $subject = "Math";
-        //     $course_number = "MTH101";
-        //     $id = 1;
-        //     $test_course = new Course($subject, $course_number, $id);
-        //     $test_course->save();
-        //
-        //     $title = "Maggie Pie";
-        //     $enrollment_date = '2016-03-05';
-        //     $id2 = 2;
-        //     $test_book = new Book($title, $enrollment_date, $id2);
-        //     $test_book->save();
-        //
-        //     //Act
-        //     $test_book->addCourse($test_course);
-        //     $test_book->delete();
-        //
-        //     //Assert
-        //     $this->assertEquals([], $test_course->getBooks());
-        // }
-
     }
  ?>

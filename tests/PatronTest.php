@@ -84,7 +84,6 @@
             $test_patron = new Patron($name, $email, $id);
             $test_patron->save();
 
-
             $name2 = "Maggie Pie";
             $email2 = "maggie@pie.com";
             $test_patron2 = new Patron($name2, $email2, $id);
@@ -107,7 +106,6 @@
             $test_patron = new Patron($name, $email, $id);
             $test_patron->save();
 
-
             $name2 = "Maggie Pie";
             $email2 = "maggie@pie.com";
             $test_patron2 = new Patron($name2, $email2, $id);
@@ -129,7 +127,6 @@
             $test_patron = new Patron($name, $email, $id);
             $test_patron->save();
 
-
             $name2 = "Maggie Pie";
             $email2 = "maggie@pie.com";
             $test_patron2 = new Patron($name2, $email2, $id);
@@ -142,32 +139,28 @@
             $this->assertEquals($test_patron, $result);
         }
 
+        function testDeletePatron()
+        {
+            //Arrange
+            $name = "Harry Houdini";
+            $email = "harry@houdini.com";
+            $id = null;
+            $test_patron = new Patron($name, $email, $id);
+            $test_patron->save();
 
-        // function testDeletePatron()
-        // {
-        //     //Arrange
-        //     $name = "Harry Houdini";
-        //
-        //     $id = 1;
-        //     $test_patron = new Patron($name, $enrollment_date, $id);
-        //     $test_patron->save();
-        //
-        //
-        //     $name2 = "Maggie Pie";
-        //     $enrollment_date2 = '2016-03-05';
-        //     $id2 = 2;
-        //     $test_patron2 = new Patron($name2, $enrollment_date2, $id2);
-        //     $test_patron2->save();
-        //
-        //
-        //     //Act
-        //     $test_patron->delete();
-        //
-        //     //Assert
-        //     $this->assertEquals(Patron::getAll(), [$test_patron2]);
-        // }
-        //
-        //
+            $name2 = "Maggie Pie";
+            $email2 = "maggie@pie.com";
+            $test_patron2 = new Patron($name2, $email2, $id);
+            $test_patron2->save();
+        
+            //Act
+            $test_patron->deletePatron();
+
+            //Assert
+            $this->assertEquals(Patron::getAll(), [$test_patron2]);
+        }
+
+
         // function testAddCourse()
         // {
         //     //Arrange

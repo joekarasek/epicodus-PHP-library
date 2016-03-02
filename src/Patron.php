@@ -43,6 +43,12 @@
               $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function deletePatron()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
+            // $GLOBALS['DB']->exec("DELETE FROM students_courses WHERE student_id = {$this->getId()};");
+        }
+
         static function getAll()
         {
             $returned_patrons = $GLOBALS['DB']->query("SELECT * FROM patrons;");
