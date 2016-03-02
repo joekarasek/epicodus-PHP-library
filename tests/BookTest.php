@@ -28,7 +28,7 @@
             $test_book = new Book($title, $id);
 
             //Act
-            $result1 = $test_book->getName();
+            $result1 = $test_book->getTitle();
             $result2 = $test_book->getId();
 
             //Assert
@@ -90,31 +90,48 @@
             $result = Book::getAll();
             $this->assertEquals([], $result);
         }
-        //
-        // function testFind()
-        // {
-        //     //Arrange
-        //     $title = "Harry Houdini";
-        //
-        //     $id = 1;
-        //     $test_book = new Book($title, $enrollment_date, $id);
-        //     $test_book->save();
-        //
-        //
-        //     $title2 = "Maggie Pie";
-        //     $enrollment_date2 = '2016-03-05';
-        //     $id2 = 2;
-        //     $test_book2 = new Book($title2, $enrollment_date2, $id2);
-        //     $test_book2->save();
-        //
-        //     //Act
-        //     $result = Book::find($test_book->getId());
-        //
-        //     //Assert
-        //     $this->assertEquals($test_book, $result);
-        // }
-        //
-        //
+
+        function testFindById()
+        {
+            //Arrange
+            $title = "Harry Houdini";
+            $id = null;
+            $test_book = new Book($title, $id);
+            $test_book->save();
+
+
+            $title2 = "Maggie Pie";
+            $test_book2 = new Book($title2, $id);
+            $test_book2->save();
+
+            //Act
+            $result = Book::findById($test_book->getId());
+
+            //Assert
+            $this->assertEquals($test_book, $result);
+        }
+
+        function testFindByTitle()
+        {
+            //Arrange
+            $title = "Harry Houdini";
+            $id = null;
+            $test_book = new Book($title, $id);
+            $test_book->save();
+
+
+            $title2 = "Maggie Pie";
+            $test_book2 = new Book($title2, $id);
+            $test_book2->save();
+
+            //Act
+            $result = Book::findByTitle($test_book->getTitle());
+
+            //Assert
+            $this->assertEquals($test_book, $result);
+        }
+
+
         // function testDeleteBook()
         // {
         //     //Arrange
