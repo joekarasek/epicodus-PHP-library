@@ -1,0 +1,17 @@
+{% if form %}
+  <form action='/librarian/book/{{ book.getId }}/edit' method='post'>
+    <input type="hidden" name="_method" value="patch">
+    <div class="form-group">
+      <h3>Edit This Book</h3>
+      <label>Book Title</label>
+      <input name='book-title' type='text' class='form-control' value='{{ book.getTitle }}'>
+    </div>
+    <button type='submit' class='btn btn-success'>Submit</button>
+  </form>
+  <br>
+  <h3>Number of this book owned by library: {{ book.getCopies }}</h3>
+  <form action="/librarian/book/{{ book.getId }}/addCopy" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <button type='submit' class='btn btn-success'>Add a copy to catalog</button>
+  </form>
+{% endif %}

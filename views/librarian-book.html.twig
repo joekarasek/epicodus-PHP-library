@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include '/includes/head.html.twig' %}
+  </head>
+  <body>
+    {% include '/includes/librarian-navbar.html.twig' %}
+    <div class="container">
+      <h2>Book Title: {{ book.getTitle }}</h2>
+      <h3>Written By:
+          {% for author in book.getAuthors %}
+            {{ author.getName }}
+          {% endfor%}
+      </h3>
+      {% include '/includes/message.html.twig'%}
+      {% include '/includes/edit-book-form.html.twig' %}
+    </div>
+  </body>
+</html>

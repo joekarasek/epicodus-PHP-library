@@ -43,22 +43,42 @@
     });
 
     $app->post("/librarian/addBook", function() use ($app) {
-        $new_book = new Book($_POST['book-title']);
-        $new_book->save();
-
-        if (Author::findByName($_POST['book-author']))
+        if (!Book::findByTitle($_POST['book-title']))
         {
-            $new_book->addAuthor(Author::findByName($_POST['book-author']));
+            $new_book = new Book($_POST['book-title']);
+            $new_book->save();
+
+            if (Author::findByName($_POST['book-author']))
+            {
+                $new_book->addAuthor(Author::findByName($_POST['book-author']));
+            } else {
+                $new_author = new Author($_POST['book-author']);
+                $new_author->save();
+                $new_book->addAuthor($new_author);
+            }
+
         } else {
-            $new_author = new Author($_POST['book-author']);
-            $new_author->save();
-            $new_book->addAuthor($new_author);
+            $message = array(
+                'type' => 'danger',
+                'text' => 'That title already exists. Book not added to catalog.'
+            );
         }
 
         return $app['twig']->render('librarian.html.twig', array(
             'navbar' => true,
             'books' => Book::getAll(),
-            'bookform' => true
+            'bookform' => true,
+            'message' => $message
+        ));
+    });
+
+    $app->get("/librarian/book/{book_id}", function($book_id) use ($app) {
+        $book = Book::findById($book_id);
+
+        return $app['twig']->render('librarian-book.html.twig', array(
+            'navbar' => true,
+            'book' => $book,
+            'form' => true
         ));
     });
 
