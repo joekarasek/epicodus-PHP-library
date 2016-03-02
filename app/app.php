@@ -31,7 +31,6 @@
         ));
     });
 
-
     $app->get("/librarian/books", function() use ($app) {
         $books = Book::getAll();
 
@@ -79,6 +78,51 @@
             'navbar' => true,
             'book' => $book,
             'form' => true
+        ));
+    });
+
+    $app->patch("/librarian/book/{book_id}/updateTitle", function($book_id) use ($app) {
+        $book = Book::findById($book_id);
+        $book->updateTitle($_POST['new-book-title']);
+
+        return $app['twig']->render('librarian-book.html.twig', array(
+            'navbar' => true,
+            'book' => $book,
+            'form' => true,
+            'message' => array(
+                'type' => 'info',
+                'text' => 'Book title updated!'
+            )
+        ));
+    });
+
+    $app->post("/librarian/book/{book_id}/addCopy", function($book_id) use ($app) {
+        $book = Book::findById($book_id);
+        $book->addCopy();
+
+        return $app['twig']->render('librarian-book.html.twig', array(
+            'navbar' => true,
+            'book' => $book,
+            'form' => true,
+            'message' => array(
+                'type' => 'warning',
+                'text' => 'Number of copies in catalog updated'
+            )
+        ));
+    });
+
+    $app->post("/librarian/book/{book_id}/deleteCopy", function($book_id) use ($app) {
+        $book = Book::findById($book_id);
+        $book->deleteCopy();
+
+        return $app['twig']->render('librarian-book.html.twig', array(
+            'navbar' => true,
+            'book' => $book,
+            'form' => true,
+            'message' => array(
+                'type' => 'danger',
+                'text' => 'You removed a copy from the catalog'
+            )
         ));
     });
 

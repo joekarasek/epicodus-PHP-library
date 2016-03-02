@@ -31,6 +31,35 @@
               $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
+        function updateTitle($new_title)
+        {
+              $GLOBALS['DB']->exec("UPDATE books SET title = '{$new_title}' WHERE id = {$this->getId()};");
+              $this->setTitle($new_title);
+        }
+
+        function addCopy()
+        {
+            $GLOBALS['DB']->exec("INSERT INTO copies (book_id, checked_out) VALUES ({$this->getId()}, 0);");
+        }
+
+        function deleteCopy()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()} LIMIT 1;");
+        }
+
+        function countCopies()
+        {
+            $query = $GLOBALS['DB']->query("SELECT copies.* FROM
+                books JOIN copies ON (books.id = copies.book_id)
+                WHERE books.id = {$this->getId()}");
+            $copies = $query->fetchAll(PDO::FETCH_ASSOC);
+            $copies_count = 0;
+            foreach ($copies as $copy) {
+                $copies_count++;
+            }
+            return $copies_count;
+        }
+
         function addAuthor($new_author)
         {
             $GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$this->getId()}, {$new_author->getId()});");
