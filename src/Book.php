@@ -47,11 +47,14 @@
             $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()} LIMIT 1;");
         }
 
-        function checkout()
+        function checkout($patron_id)
         {
             if($this->countCopiesAvailable()>0) {
+                $query = $GLOBALS['DB']->query("SELECT id FROM copies WHERE book_id = {$this->getId()} AND checked_out = 0 LIMIT 1;");
+                $copy_mid_step = $query->fetchAll(PDO::FETCH_ASSOC);
+                $copy_id = $copy_mid_step[0]['id'];
                 $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE book_id = {$this->getId()} AND checked_out = 0 LIMIT 1;");
-                // $GLOBALS['DB']->exec("INSERT INTO checkouts ")
+                $GLOBALS['DB']->exec("INSERT INTO checkouts (book_id, patron_id, copy_id, due_date, returned) VALUES ({$this->getId()}, {$patron_id}, {$copy_id}, '2016-02-14', 0);");
             }
         }
 

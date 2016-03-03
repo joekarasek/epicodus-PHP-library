@@ -232,7 +232,7 @@
     $app->post("/patron/{patron_id}/book/{book_id}/checkout", function($patron_id, $book_id) use ($app) {
         $patron = Patron::findbyId($patron_id);
         $book = Book::findById($book_id);
-        $book->checkout();
+        $book->checkout($patron_id);
 
         return $app['twig']->render('patron-book.html.twig', array(
             'patron' => $patron,
