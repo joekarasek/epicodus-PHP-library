@@ -55,7 +55,8 @@
                 $copy_mid_step = $query->fetchAll(PDO::FETCH_ASSOC);
                 $copy_id = $copy_mid_step[0]['id'];
                 $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE book_id = {$this->getId()} AND checked_out = 0 LIMIT 1;");
-                $GLOBALS['DB']->exec("INSERT INTO checkouts (book_id, patron_id, copy_id, due_date, returned) VALUES ({$this->getId()}, {$patron_id}, {$copy_id}, '2016-02-14', 0);");
+                $due_date = date('Y-m-d', strtotime('-1 week'));
+                $GLOBALS['DB']->exec("INSERT INTO checkouts (book_id, patron_id, copy_id, due_date, returned) VALUES ({$this->getId()}, {$patron_id}, {$copy_id}, '{$due_date}', 0);");
             }
         }
 
@@ -103,25 +104,58 @@
             foreach($copies as $copy) {
                 $id = $copy['id'];
                 $checked_out = $copy['checked_out'];
-                if ($checked_out) {
-                    $query = $GLOBALS['DB']->query("SELECT patron_id FROM checkouts WHERE copy_id = {$id} AND returned = 0;");
-                    $patron_array = $query->fetchAll(PDO::FETCH_ASSOC);
-                    $patron_id = $patron_array[0]['patron_id'];
-                    $patron = Patron::findbyId($patron_id);
-                    $patron_name = $patron->getName();
+                $query = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE copy_id = {$id} AND returned = 0;");
+                $patron_array = $query->fetchAll(PDO::FETCH_ASSOC);
+                if (!empty($patron_array)) {
+                    if ($checked_out) {
+                        $patron_id = $patron_array[0]['patron_id'];
+                        $patron = Patron::findbyId($patron_id);
+                        $patron_name = $patron->getName();
+                        $due_date = $patron_array[0]['due_date'];
                     } else {
                         $patron_name = "The Library";
                     }
+                } else {
+                    $patron_name = "The Library";
+                    $due_date = "2050-01-01";
+                }
+                // if (count($patron_array[0]['due_date']) != 0 ) {
+                //     $due_date = $patron_array[0]['due_date'];
+                // } else {
+                //     $due_date = '2050-01-01';
+                // }
+
                 $book_id = $this->getId();
                 $copy_entry = array(
                     'copy_id' => $id,
                     'checked_out' => $checked_out,
-                    'owner_name' => $patron_name
+                    'owner_name' => $patron_name,
+                    'due_date' => $due_date,
+                    'over_due' => $this->overdue($id)
                     );
                 array_push($copies_array, $copy_entry);
             }
 
             return $copies_array;
+        }
+
+        function overdue($copy_id)
+        {
+            $today = date('Y-m-d', strtotime('now'));
+            $query = $GLOBALS['DB']->query("SELECT due_date FROM checkouts WHERE copy_id = {$copy_id} AND returned = 0;");
+            // var_dump($due_date_mid_step['due_date']);
+            $due_date_mid_step = $query->fetchAll(PDO::FETCH_ASSOC);
+            if (!empty($due_date_mid_step)) {
+                $due_date = $due_date_mid_step[0]['due_date'];
+            } else {
+                $due_date = '2050-01-01';
+            }
+
+            if($today > $due_date) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function addAuthor($new_author)

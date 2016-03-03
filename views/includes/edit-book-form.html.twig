@@ -18,6 +18,25 @@
     <div class="well well-sm">
         <h4>Location/Patron: {{ copy.owner_name }}</h4>
         <h5>Copy Id: {{ copy.copy_id }}</h5>
+        {% if copy.checked_out %}
+            <h5>Due Date: {{ copy.due_date }}</h5>
+            <h5>Overdue:
+                {% if copy.over_due %}
+                    <p>OVERDUE</p>
+                {% else %}
+                    <p>No</p>
+                {% endif %}
+            </h5>
+        {% else %}
+            <h5>Due Date: {{ copy.due_date }}</h5>
+            <h5>Overdue:
+                {% if copy.over_due %}
+                    <p>OVERDUE</p>
+                {% else %}
+                    <p>No</p>
+                {% endif %}
+            </h5>
+        {% endif %}
         <form action="/librarian/book/{{ book.getId }}/deleteCopy/{{ copy.copy_id }}" method="post">
             <input type="hidden" name="_method" value="delete">
             <button type='submit' class='btn btn-danger'>Delete this copy</button>
