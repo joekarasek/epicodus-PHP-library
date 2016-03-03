@@ -50,7 +50,8 @@
         function checkout()
         {
             if($this->countCopiesAvailable()>0) {
-                $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE book_id = {$this->getId()} LIMIT 1;");
+                $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE book_id = {$this->getId()} AND checked_out = 0 LIMIT 1;");
+                // $GLOBALS['DB']->exec("INSERT INTO checkouts ")
             }
         }
 

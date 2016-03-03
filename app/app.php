@@ -245,6 +245,15 @@
         ));
     });
 
+    $app->get("/patron/{patron_id}/checkouts", function($patron_id) use ($app) {
+        $patron = Patron::findbyId($patron_id);
+
+        return $app['twig']->render('patron-checkouts.html.twig', array(
+            'patron' => $patron,
+            'navbar' => true
+        ));
+    });
+
 
 
 
