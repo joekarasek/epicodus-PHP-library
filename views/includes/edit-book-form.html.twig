@@ -27,15 +27,6 @@
                     <p>No</p>
                 {% endif %}
             </h5>
-        {% else %}
-            <h5>Due Date: {{ copy.due_date }}</h5>
-            <h5>Overdue:
-                {% if copy.over_due %}
-                    <p>OVERDUE</p>
-                {% else %}
-                    <p>No</p>
-                {% endif %}
-            </h5>
         {% endif %}
         <form action="/librarian/book/{{ book.getId }}/deleteCopy/{{ copy.copy_id }}" method="post">
             <input type="hidden" name="_method" value="delete">
