@@ -4,7 +4,7 @@
         {% for book in books %}
             <div class="well">
                 <li>
-                    <a href="/patron/book/{{ book.getId }}">{{ book.getTitle }} by
+                    <a href="/patron/{{ patron.getId }}/book/{{ book.getId }}">{{ book.getTitle }} by
                         {% for author in book.getAuthors %}
                             {{ author.getName }}
                         {% endfor%}

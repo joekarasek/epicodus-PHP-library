@@ -6,6 +6,7 @@
   <body>
     {% include '/includes/patron-navbar.html.twig' %}
     <div class="container">
+      {% include '/includes/message.html.twig' %}
       <h2>Book Title: {{ book.getTitle }}</h2>
       <h3>Written By:
           {% for author in book.getAuthors %}
@@ -13,8 +14,8 @@
           {% endfor%}
       </h3>
       <h3>Number of copies in catalog: {{ book.countCopies }}</h3>
-      <h3>Number of copies in available: UPDATE ME</h3>
-      <form action="/patron/book/{{ book.getId }}/checkout" method="post">
+      <h3>Number of copies in available: {{ book.countCopiesAvailable }}</h3>
+      <form action="/patron/{{ patron.getId }}/book/{{ book.getId }}/checkout" method="post">
         <button type='submit' class='btn btn-danger'>Checkout this book!</button>
       </form>
     </div>

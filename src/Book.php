@@ -47,6 +47,13 @@
             $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()} LIMIT 1;");
         }
 
+        function checkout()
+        {
+            if($this->countCopiesAvailable()>0) {
+                $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE book_id = {$this->getId()} LIMIT 1;");
+            }
+        }
+
         function countCopies()
         {
             $query = $GLOBALS['DB']->query("SELECT copies.* FROM
@@ -59,6 +66,31 @@
             }
             return $copies_count;
         }
+
+        function countCopiesAvailable()
+        {
+            $query = $GLOBALS['DB']->query("SELECT copies.* FROM
+                books JOIN copies ON (books.id = copies.book_id)
+                WHERE books.id = {$this->getId()}");
+            $copies = $query->fetchAll(PDO::FETCH_ASSOC);
+            $copies_count = 0;
+            foreach ($copies as $copy) {
+                if($copy['checked_out'] == 0) {
+                    $copies_count++;
+                }
+            }
+            return $copies_count;
+        }
+
+        //
+        // function getCopies()
+        // {
+        //     $query = $GLOBALS['DB']->query("SELECT copies.* FROM
+        //         books JOIN copies ON (books.id = copies.book_id)
+        //         WHERE books.id = {$this->getId()}");
+        //     $copies = $query->fetchAll(PDO::FETCH_ASSOC);
+        //     return $copies;
+        // }
 
         function addAuthor($new_author)
         {

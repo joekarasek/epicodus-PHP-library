@@ -6,7 +6,14 @@
   <body>
     {% include '/includes/patron-navbar.html.twig' %}
     <div class="container">
-      {% include '/includes/message.html.twig'%}
+        {% include '/includes/message.html.twig'%}
+        {% for patron in patrons %}
+            <div class="well">
+                <li>
+                    <a href="/patron/{{ patron.getId }}/books">{{ patron.getName }}</a>
+                </li>
+            </div>
+        {% endfor %}
       {% include '/includes/patron-book-list.html.twig'%}
     </div>
   </body>

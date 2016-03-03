@@ -197,26 +197,51 @@
     });
 
     $app->get("/patron", function() use ($app) {
+        $patrons = Patron::getAll();
         return $app['twig']->render('patron.html.twig', array(
-            'navbar' => true
+            'patrons' => $patrons,
+            'message' => array(
+                'type' => 'info',
+                'text' => 'Click on your own name!'
+            )
         ));
     });
 
-    $app->get("/patron/books", function() use ($app) {
+    $app->get("/patron/{patron_id}/books", function($patron_id) use ($app) {
+        $patron = Patron::findbyId($patron_id);
         $books = Book::getAll();
 
         return $app['twig']->render('patron.html.twig', array(
+            'patron' => $patron,
             'navbar' => true,
             'books' => $books
         ));
     });
 
-    $app->get("/patron/book/{book_id}", function($book_id) use ($app) {
+    $app->get("/patron/{patron_id}/book/{book_id}", function($patron_id, $book_id) use ($app) {
+        $patron = Patron::findbyId($patron_id);
         $book = Book::findById($book_id);
 
         return $app['twig']->render('patron-book.html.twig', array(
+            'patron' => $patron,
+            'navbar' => true,
+            'book' => $book
+        ));
+    });
+
+    $app->post("/patron/{patron_id}/book/{book_id}/checkout", function($patron_id, $book_id) use ($app) {
+        $patron = Patron::findbyId($patron_id);
+        $book = Book::findById($book_id);
+        $book->checkout();
+
+        return $app['twig']->render('patron-book.html.twig', array(
+            'patron' => $patron,
             'navbar' => true,
             'book' => $book,
+            'message' => array(
+                'type' => 'info',
+                'text' => 'You checked out a copy of this book'
+            )
         ));
     });
 
