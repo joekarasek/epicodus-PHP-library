@@ -256,6 +256,23 @@
         ));
     });
 
+    $app->patch("/patron/{patron_id}/checkouts/{book_id}/return", function($patron_id, $book_id) use ($app) {
+        $patron = Patron::findbyId($patron_id);
+        $book = Book::findById($book_id);
+        $book->returnCopy($_POST['copy_id']);
+        $checkouts = $patron->getCheckouts();
+
+        return $app['twig']->render('patron-checkouts.html.twig', array(
+            'patron' => $patron,
+            'navbar' => true,
+            'checkouts' => $checkouts,
+            'message' => array(
+                'type' => 'info',
+                'text' => 'You returned a copy of ' . $book->getTitle()
+            )
+        ));
+    });
+
 
 
 

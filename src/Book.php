@@ -58,6 +58,15 @@
             }
         }
 
+        function returnCopy($copy_id)
+        {
+            // $query = $GLOBALS['DB']->query("SELECT id FROM copies WHERE book_id = {$this->getId()} AND checked_out = 1 LIMIT 1;");
+            // $copy_mid_step = $query->fetchAll(PDO::FETCH_ASSOC);
+            // $copy_id = $copy_mid_step[0]['id'];
+            $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 0 WHERE book_id = {$this->getId()} AND checked_out = 1 LIMIT 1;");
+            $GLOBALS['DB']->exec("UPDATE checkouts SET returned = 1 WHERE copy_id = {$copy_id} AND returned = 0 LIMIT 1;");
+        }
+
         function countCopies()
         {
             $query = $GLOBALS['DB']->query("SELECT copies.* FROM

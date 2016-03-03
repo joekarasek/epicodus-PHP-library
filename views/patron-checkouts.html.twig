@@ -9,15 +9,48 @@
       {% include '/includes/message.html.twig' %}
       <h2>Welcome to your account, {{ patron.getName }}!</h2>
       <h3>Here are the books you have checked out:</h3>
-      <ul>
-          {% for checkout in checkouts %}
-              <li>Book Title: {{ checkout.book_title }}</li>
-              <li>By: {{ checkout.book_authors }}</li>
-              <!-- <form action="/patron/{{ patron.getId }}/checkouts/{{ book.getId }}/return" method="post">
-              <button type='submit' class='btn btn-danger'>Return this book!</button> -->
-          </form>
-          {% endfor %}
-      </ul>
+        {% for checkout in checkouts %}
+            {% if checkout.returned == 0 %}
+              <div class="panel panel-danger">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">Book Title: {{ checkout.book_title }}</h3>
+                  </div>
+
+                  <div class="panel-body">
+                      <h4>By: {% for author in checkout.author %}
+                                {{ author.getName }}
+                              {% endfor %}
+                      </h4>
+                      <h4>Due: {{ checkout.due_date}}</h4>
+
+                      <form action="/patron/{{ patron.getId }}/checkouts/{{ checkout.book_id }}/return" method="post">
+                          <input type="hidden" name="_method" value="patch">
+                          <input type="hidden" name="copy_id" value="{{ checkout.copy_id }}">
+                          <button type='submit' class='btn btn-danger'>Return this book!</button>
+                      </form>
+                  </div>
+              </div>
+            {% endif %}
+        {% endfor %}
+
+        <h3>Here are books you've returned:</h3>
+        {% for checkout in checkouts %}
+            {% if checkout.returned == 1 %}
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Book Title: {{ checkout.book_title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4>By: {% for author in checkout.author %}
+                                  {{ author.getName }}
+                                {% endfor %}
+                        </h4>
+                        <h4>Due: {{ checkout.due_date}}</h4>
+                        <h4>Returned!</h4>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
   </body>
 </html>

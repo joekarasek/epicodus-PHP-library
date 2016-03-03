@@ -65,16 +65,18 @@
             foreach ($returned_checkouts as $checkout) {
                 $book = Book::findById($checkout['book_id']);
                 $book_title = $book->getTitle();
-                $authors = $book->getAuthors();
+                $book_id = $book->getId();
+                $author = $book->getAuthors();
                 $result = array(
                     'book_title' => $book_title,
-                    'authors' => $authors,
+                    'book_id' => $book_id,
+                    'author' => $author,
                     'due_date' => $checkout['due_date'],
+                    'copy_id' => $checkout['copy_id'],
                     'returned' => $checkout['returned']
                 );
                 array_push($checked_out_books, $result);
             }
-            var_dump($checked_out_books);
             return $checked_out_books;
         }
 
