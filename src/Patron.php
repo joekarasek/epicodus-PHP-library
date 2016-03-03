@@ -56,6 +56,28 @@
             // $GLOBALS['DB']->exec("DELETE FROM students_courses WHERE student_id = {$this->getId()};");
         }
 
+        function getCheckouts()
+        {
+            $query = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE patron_id = {$this->getId()};");
+            $returned_checkouts = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $checked_out_books = array();
+            foreach ($returned_checkouts as $checkout) {
+                $book = Book::findById($checkout['book_id']);
+                $book_title = $book->getTitle();
+                $authors = $book->getAuthors();
+                $result = array(
+                    'book_title' => $book_title,
+                    'authors' => $authors,
+                    'due_date' => $checkout['due_date'],
+                    'returned' => $checkout['returned']
+                );
+                array_push($checked_out_books, $result);
+            }
+            var_dump($checked_out_books);
+            return $checked_out_books;
+        }
+
         static function getAll()
         {
             $returned_patrons = $GLOBALS['DB']->query("SELECT * FROM patrons;");

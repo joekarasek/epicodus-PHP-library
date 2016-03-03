@@ -247,10 +247,12 @@
 
     $app->get("/patron/{patron_id}/checkouts", function($patron_id) use ($app) {
         $patron = Patron::findbyId($patron_id);
+        $checkouts = $patron->getCheckouts();
 
         return $app['twig']->render('patron-checkouts.html.twig', array(
             'patron' => $patron,
-            'navbar' => true
+            'navbar' => true,
+            'checkouts' => $checkouts
         ));
     });
 

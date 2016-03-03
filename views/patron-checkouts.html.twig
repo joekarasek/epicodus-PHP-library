@@ -11,9 +11,10 @@
       <h3>Here are the books you have checked out:</h3>
       <ul>
           {% for checkout in checkouts %}
-              <li>DISPLAY CHECKED OUT BOOKS HERE</li>
-              <form action="/patron/{{ patron.getId }}/checkouts/{{ book.getId }}/return" method="post">
-              <button type='submit' class='btn btn-danger'>Return this book!</button>
+              <li>Book Title: {{ checkout.book_title }}</li>
+              <li>By: {{ checkout.book_authors }}</li>
+              <!-- <form action="/patron/{{ patron.getId }}/checkouts/{{ book.getId }}/return" method="post">
+              <button type='submit' class='btn btn-danger'>Return this book!</button> -->
           </form>
           {% endfor %}
       </ul>
