@@ -10,6 +10,31 @@
       <h3>Patron Email: {{ patron.getEmail }}</h3>
       {% include '/includes/message.html.twig'%}
       {% include '/includes/edit-patron-form.html.twig' %}
+      <br>
+      {% for checkout in checkouts %}
+      <h3>Currently Checked Out:</h3>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Book Title: {{ checkout.book_title }}</h3>
+            </div>
+
+            <div class="panel-body">
+                <h4>By: {% for author in checkout.author %}
+                          {{ author.getName }}
+                        {% endfor %}
+                </h4>
+            <!-- not working -->
+            {% set copy_id = checkout.copy_id %}
+                <h4>Due: {{ checkout.due_date}}</h4>
+                {% if book.overdue(copy_id) %}
+                    <h5>OVERDUE</h5>
+                {% else %}
+                <!--  -->
+                    <h5>NOT OVERDUE</h5>
+                {% endif %}
+            </div>
+        </div>
+      {% endfor %}
     </div>
   </body>
 </html>

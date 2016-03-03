@@ -168,11 +168,14 @@
 
     $app->get("/librarian/patron/{patron_id}", function($patron_id) use ($app) {
         $patron = Patron::findById($patron_id);
-
+        $checkouts = $patron->getCheckouts();
+        $dummy_book = new Book("dummy");
         return $app['twig']->render('librarian-patron.html.twig', array(
             'navbar' => true,
             'patron' => $patron,
-            'form' => true
+            'form' => true,
+            'checkouts' => $checkouts,
+            'book' => $dummy_book
         ));
     });
 

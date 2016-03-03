@@ -55,7 +55,7 @@
                 $copy_mid_step = $query->fetchAll(PDO::FETCH_ASSOC);
                 $copy_id = $copy_mid_step[0]['id'];
                 $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 1 WHERE book_id = {$this->getId()} AND checked_out = 0 LIMIT 1;");
-                $due_date = date('Y-m-d', strtotime('-1 week'));
+                $due_date = date('Y-m-d', strtotime('+1 week'));
                 $GLOBALS['DB']->exec("INSERT INTO checkouts (book_id, patron_id, copy_id, due_date, returned) VALUES ({$this->getId()}, {$patron_id}, {$copy_id}, '{$due_date}', 0);");
             }
         }
@@ -119,11 +119,6 @@
                     $patron_name = "The Library";
                     $due_date = "2050-01-01";
                 }
-                // if (count($patron_array[0]['due_date']) != 0 ) {
-                //     $due_date = $patron_array[0]['due_date'];
-                // } else {
-                //     $due_date = '2050-01-01';
-                // }
 
                 $book_id = $this->getId();
                 $copy_entry = array(
