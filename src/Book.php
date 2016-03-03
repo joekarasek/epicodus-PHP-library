@@ -42,9 +42,10 @@
             $GLOBALS['DB']->exec("INSERT INTO copies (book_id, checked_out) VALUES ({$this->getId()}, 0);");
         }
 
-        function deleteCopy()
+        function deleteCopy($copy_id)
         {
-            $GLOBALS['DB']->exec("DELETE FROM copies WHERE book_id = {$this->getId()} LIMIT 1;");
+            $GLOBALS['DB']->exec("DELETE FROM copies WHERE id = {$copy_id};");
+            $GLOBALS['DB']->exec("UPDATE checkouts SET returned = 1 WHERE copy_id = {$copy_id};");
         }
 
         function checkout($patron_id)
@@ -60,9 +61,6 @@
 
         function returnCopy($copy_id)
         {
-            // $query = $GLOBALS['DB']->query("SELECT id FROM copies WHERE book_id = {$this->getId()} AND checked_out = 1 LIMIT 1;");
-            // $copy_mid_step = $query->fetchAll(PDO::FETCH_ASSOC);
-            // $copy_id = $copy_mid_step[0]['id'];
             $GLOBALS['DB']->exec("UPDATE copies SET checked_out = 0 WHERE book_id = {$this->getId()} AND checked_out = 1 LIMIT 1;");
             $GLOBALS['DB']->exec("UPDATE checkouts SET returned = 1 WHERE copy_id = {$copy_id} AND returned = 0 LIMIT 1;");
         }
@@ -95,15 +93,36 @@
             return $copies_count;
         }
 
-        //
-        // function getCopies()
-        // {
-        //     $query = $GLOBALS['DB']->query("SELECT copies.* FROM
-        //         books JOIN copies ON (books.id = copies.book_id)
-        //         WHERE books.id = {$this->getId()}");
-        //     $copies = $query->fetchAll(PDO::FETCH_ASSOC);
-        //     return $copies;
-        // }
+        function getCopies()
+        {
+            $query = $GLOBALS['DB']->query("SELECT copies.* FROM
+                books JOIN copies ON (books.id = copies.book_id)
+                WHERE books.id = {$this->getId()}");
+            $copies = $query->fetchAll(PDO::FETCH_ASSOC);
+            $copies_array = array();
+            foreach($copies as $copy) {
+                $id = $copy['id'];
+                $checked_out = $copy['checked_out'];
+                if ($checked_out) {
+                    $query = $GLOBALS['DB']->query("SELECT patron_id FROM checkouts WHERE copy_id = {$id} AND returned = 0;");
+                    $patron_array = $query->fetchAll(PDO::FETCH_ASSOC);
+                    $patron_id = $patron_array[0]['patron_id'];
+                    $patron = Patron::findbyId($patron_id);
+                    $patron_name = $patron->getName();
+                    } else {
+                        $patron_name = "The Library";
+                    }
+                $book_id = $this->getId();
+                $copy_entry = array(
+                    'copy_id' => $id,
+                    'checked_out' => $checked_out,
+                    'owner_name' => $patron_name
+                    );
+                array_push($copies_array, $copy_entry);
+            }
+
+            return $copies_array;
+        }
 
         function addAuthor($new_author)
         {
@@ -132,7 +151,6 @@
         {
             $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
             $GLOBALS['DB']->exec("DELETE FROM books_authors WHERE book_id = {$this->getId()};");
-            //ASK JOHN ABOUT HOW TO TEST THIS LINE
         }
 
         static function getAll()

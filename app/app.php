@@ -73,11 +73,13 @@
 
     $app->get("/librarian/book/{book_id}", function($book_id) use ($app) {
         $book = Book::findById($book_id);
+        $copies = $book->getCopies();
 
         return $app['twig']->render('librarian-book.html.twig', array(
             'navbar' => true,
             'book' => $book,
-            'form' => true
+            'form' => true,
+            'copies' => $copies
         ));
     });
 
@@ -99,6 +101,7 @@
     $app->post("/librarian/book/{book_id}/addCopy", function($book_id) use ($app) {
         $book = Book::findById($book_id);
         $book->addCopy();
+        $copies = $book->getCopies();
 
         return $app['twig']->render('librarian-book.html.twig', array(
             'navbar' => true,
@@ -107,13 +110,15 @@
             'message' => array(
                 'type' => 'warning',
                 'text' => 'Number of copies in catalog updated'
-            )
+            ),
+            'copies' => $copies
         ));
     });
 
-    $app->delete("/librarian/book/{book_id}/deleteCopy", function($book_id) use ($app) {
+    $app->delete("/librarian/book/{book_id}/deleteCopy/{copy_id}", function($book_id, $copy_id) use ($app) {
         $book = Book::findById($book_id);
-        $book->deleteCopy();
+        $book->deleteCopy($copy_id);
+        $copies = $book->getCopies();
 
         return $app['twig']->render('librarian-book.html.twig', array(
             'navbar' => true,
@@ -122,7 +127,8 @@
             'message' => array(
                 'type' => 'danger',
                 'text' => 'You removed a copy from the catalog'
-            )
+            ),
+            'copies' => $copies
         ));
     });
 
@@ -141,6 +147,10 @@
         {
             $new_patron = new Patron($_POST['patron-name'], $_POST['patron-email']);
             $new_patron->save();
+            $message = array(
+                'type' => 'info',
+                'text' => $_POST['patron-name'] . ' was added to the database.'
+            );
         } else {
             $message = array(
                 'type' => 'danger',

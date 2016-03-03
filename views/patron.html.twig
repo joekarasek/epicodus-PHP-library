@@ -10,7 +10,7 @@
         {% for patron in patrons %}
             <div class="well">
                 <li>
-                    <a href="/patron/{{ patron.getId }}/books">{{ patron.getName }}</a>
+                    <a href="/patron/{{ patron.getId }}/checkouts">{{ patron.getName }}</a>
                 </li>
             </div>
         {% endfor %}

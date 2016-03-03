@@ -14,8 +14,18 @@
     <button type='submit' class='btn btn-warning'>Add a copy to catalog</button>
   </form>
   <br>
-  <form action="/librarian/book/{{ book.getId }}/deleteCopy" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <button type='submit' class='btn btn-danger'>Delete a copy from the catalog</button>
-  </form>
+    {% for copy in copies%}
+    <div class="well well-sm">
+        <h4>Location/Patron: {{ copy.owner_name }}</h4>
+        <h5>Copy Id: {{ copy.copy_id }}</h5>
+        <form action="/librarian/book/{{ book.getId }}/deleteCopy/{{ copy.copy_id }}" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <button type='submit' class='btn btn-danger'>Delete this copy</button>
+        </form>
+    </div>
+
+    {% endfor %}
+
+
+
 {% endif %}

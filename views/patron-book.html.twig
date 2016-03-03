@@ -14,10 +14,12 @@
           {% endfor%}
       </h3>
       <h3>Number of copies in catalog: {{ book.countCopies }}</h3>
-      <h3>Number of copies in available: {{ book.countCopiesAvailable }}</h3>
-      <form action="/patron/{{ patron.getId }}/book/{{ book.getId }}/checkout" method="post">
-        <button type='submit' class='btn btn-danger'>Checkout this book!</button>
-      </form>
+      <h3>Number of copies available: {{ book.countCopiesAvailable }}</h3>
+      {% if book.countCopiesAvailable != 0 %}
+          <form action="/patron/{{ patron.getId }}/book/{{ book.getId }}/checkout" method="post">
+            <button type='submit' class='btn btn-danger'>Checkout this book!</button>
+          </form>
+      {% endif %}
     </div>
   </body>
 </html>
